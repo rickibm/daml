@@ -11,6 +11,7 @@ import com.digitalasset.AllGenericTests;
 @Suite.SuiteClasses({
         MapTest.class,
         ContractKeysTest.class,
+        EnumTest.class,
         AllGenericTests.class
 })
 public class AllTests {
