@@ -242,10 +242,10 @@ object ScenarioLoader {
                 (
                   txId,
                   Transaction(
+                    Some(transactionId),
                     transactionId,
-                    transactionId,
-                    scenarioLoader,
-                    richTransaction.committer,
+                    Some(scenarioLoader),
+                    Some(richTransaction.committer),
                     workflowId,
                     time.toInstant,
                     time.toInstant,

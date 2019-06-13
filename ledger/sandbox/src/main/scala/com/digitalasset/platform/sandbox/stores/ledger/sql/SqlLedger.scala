@@ -283,10 +283,10 @@ private class SqlLedger(
       } else {
         PersistenceEntry.Transaction(
           LedgerEntry.Transaction(
-            submitterInfo.commandId,
+            Some(submitterInfo.commandId),
             transactionId,
-            submitterInfo.applicationId,
-            submitterInfo.submitter,
+            Some(submitterInfo.applicationId),
+            Some(submitterInfo.submitter),
             transactionMeta.workflowId,
             transactionMeta.ledgerEffectiveTime,
             recordTime,
