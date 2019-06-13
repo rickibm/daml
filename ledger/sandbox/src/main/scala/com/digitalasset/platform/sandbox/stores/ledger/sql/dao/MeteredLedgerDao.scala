@@ -7,7 +7,7 @@ import akka.NotUsed
 import akka.stream.Materializer
 import akka.stream.scaladsl.Source
 import com.daml.ledger.participant.state.v2.PartyAllocationResult
-import com.digitalasset.daml.lf.data.Ref.Party
+import com.digitalasset.daml.lf.data.Ref.{LedgerString, Party}
 import com.digitalasset.daml.lf.transaction.Node
 import com.digitalasset.daml.lf.value.Value
 import com.digitalasset.ledger.api.domain.{LedgerId, PartyDetails}
@@ -24,6 +24,9 @@ private class MeteredLedgerDao(ledgerDao: LedgerDao, mm: MetricsManager) extends
 
   override def lookupLedgerEnd(): Future[Long] =
     mm.timedFuture("LedgerDao:lookupLedgerEnd", ledgerDao.lookupLedgerEnd())
+
+  override def lookupExternalLedgerEnd(): Future[Option[LedgerString]] =
+    mm.timedFuture("LedgerDao:lookupExternalLedgerEnd", ledgerDao.lookupExternalLedgerEnd())
 
   override def lookupActiveContract(
       contractId: Value.AbsoluteContractId): Future[Option[Contract]] =
@@ -46,10 +49,11 @@ private class MeteredLedgerDao(ledgerDao: LedgerDao, mm: MetricsManager) extends
   override def storeLedgerEntry(
       offset: Long,
       newLedgerEnd: Long,
+      externalOffset: Option[ExternalOffset],
       ledgerEntry: PersistenceEntry): Future[PersistenceResponse] =
     mm.timedFuture(
       "storeLedgerEntry",
-      ledgerDao.storeLedgerEntry(offset, newLedgerEnd, ledgerEntry))
+      ledgerDao.storeLedgerEntry(offset, newLedgerEnd, externalOffset, ledgerEntry))
 
   override def storeInitialState(
       activeContracts: immutable.Seq[Contract],

@@ -9,9 +9,9 @@ import akka.stream.scaladsl.Sink
 import com.daml.ledger.participant.state.v2.{SubmissionResult, SubmitterInfo, TransactionMeta}
 import com.digitalasset.api.util.TimeProvider
 import com.digitalasset.daml.lf.data.{ImmArray, Ref}
+import com.digitalasset.daml.lf.transaction.GenTransaction
 import com.digitalasset.daml.lf.transaction.Node._
 import com.digitalasset.daml.lf.transaction.Transaction.{NodeId, TContractId, Value}
-import com.digitalasset.daml.lf.transaction.GenTransaction
 import com.digitalasset.daml.lf.value.Value.{
   AbsoluteContractId,
   ContractInst,
@@ -19,6 +19,7 @@ import com.digitalasset.daml.lf.value.Value.{
   VersionedValue
 }
 import com.digitalasset.daml.lf.value.ValueVersions
+import com.digitalasset.ledger.api.domain.LedgerId
 import com.digitalasset.ledger.api.testing.utils.{
   AkkaBeforeAndAfterAll,
   Resource,
@@ -29,7 +30,6 @@ import com.digitalasset.platform.testing.MultiResourceBase
 import org.scalatest.concurrent.{AsyncTimeLimitedTests, ScalaFutures}
 import org.scalatest.time.Span
 import org.scalatest.{AsyncWordSpec, Matchers}
-import com.digitalasset.ledger.api.domain.LedgerId
 
 import scala.concurrent.Future
 import scala.concurrent.duration._
