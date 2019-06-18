@@ -27,8 +27,8 @@
 # be resolvable from external workspaces otherwise.
 
 rules_scala_version = "78104d8014d4e4fc8f905cd34b91dfabd9a268c8"
-rules_haskell_version = "1abeb655147459dfc60eddf556914699d1630d86"
-rules_haskell_sha256 = "d8d4f5247e59182b1c5ce3c19d2f48f0b6fbbbc9b16b2e37dd53533c4f258ba3"
+rules_haskell_version = "507b65fb6eff33096e43d724d6eb51db3c4376cb"
+rules_haskell_sha256 = "192d3a1cfd4c18f3e17652e96bd3cb29a19475082f0522d981233ffe7b76108a"
 rules_nixpkgs_version = "5ffb8a4ee9a52bc6bc12f95cd64ecbd82a79bc82"
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
@@ -41,15 +41,15 @@ def daml_deps():
             strip_prefix = "rules_haskell-%s" % rules_haskell_version,
             urls = ["https://github.com/tweag/rules_haskell/archive/%s.tar.gz" % rules_haskell_version],
             patches = [
-                "@com_github_digital_asset_daml//bazel_tools:haskell-static-linking.patch",
-                "@com_github_digital_asset_daml//bazel_tools:haskell-package-env.patch",
-                "@com_github_digital_asset_daml//bazel_tools:haskell-drop-fake-static.patch",
-                "@com_github_digital_asset_daml//bazel_tools:haskell-keep-hs-extra-libs.patch",
+                #"@com_github_digital_asset_daml//bazel_tools:haskell-static-linking.patch",
+                #"@com_github_digital_asset_daml//bazel_tools:haskell-package-env.patch",
+                #"@com_github_digital_asset_daml//bazel_tools:haskell-drop-fake-static.patch",
+                #"@com_github_digital_asset_daml//bazel_tools:haskell-keep-hs-extra-libs.patch",
                 "@com_github_digital_asset_daml//bazel_tools:haskell_public_ghci_repl_wrapper.patch",
-                # XXX: Remove once rules_haskell is upgraded to include
-                #   https://github.com/tweag/rules_haskell/pull/950 and
-                #   https://github.com/tweag/rules_haskell/pull/952
-                "@com_github_digital_asset_daml//bazel_tools:haskell_ghci_repl_toolchain_lib.patch",
+                ## XXX: Remove once rules_haskell is upgraded to include
+                ##   https://github.com/tweag/rules_haskell/pull/950 and
+                ##   https://github.com/tweag/rules_haskell/pull/952
+                #"@com_github_digital_asset_daml//bazel_tools:haskell_ghci_repl_toolchain_lib.patch",
             ],
             patch_args = ["-p1"],
             sha256 = rules_haskell_sha256,
