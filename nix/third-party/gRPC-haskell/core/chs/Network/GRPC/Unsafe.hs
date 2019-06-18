@@ -14,6 +14,7 @@ import qualified Foreign.Ptr as C2HSImp
 import qualified Foreign.Storable as C2HSImp
 
 
+import Debug.Trace
 
 import Control.Exception (bracket)
 import Control.Monad
@@ -152,7 +153,7 @@ newtype CallHandle = CallHandle {unCallHandle :: Ptr ()} deriving (Show, Eq)
 newtype Reserved = Reserved {unReserved :: Ptr ()}
 
 reserved :: Reserved
-reserved = Reserved nullPtr
+reserved = trace ("reserved") Reserved nullPtr
 
 data CallError = CallOk
                | CallError
@@ -440,11 +441,11 @@ grpcChannelCreateCall a1 a2 a3 a4 a5 a6 a7 a8 =
 -- undocumented.
 grpcInsecureChannelCreate :: (ByteString) -> (GrpcChannelArgs) -> (Reserved) -> IO ((Channel))
 grpcInsecureChannelCreate a1 a2 a3 =
-  useAsCString a1 $ \a1' -> 
-  let {a2' = id a2} in 
-  let {a3' = unReserved a3} in 
+  trace ("grpcInsecureChannelCreate") $ useAsCString a1 $ \a1' ->
+  let {a2' = trace ("grpcInsecureChannelCreate 1") $ id a2} in
+  let {a3' = trace ("grpcInsecureChannelCreate 2") $ unReserved a3} in
   grpcInsecureChannelCreate'_ a1' a2' a3' >>= \res ->
-  let {res' = id res} in
+  let {res' = trace ("grpcInsecureChannelCreate 3") $ id res} in
   return (res')
 
 {-# LINE 197 "nix/third-party/gRPC-haskell/core/src/Network/GRPC/Unsafe.chs" #-}

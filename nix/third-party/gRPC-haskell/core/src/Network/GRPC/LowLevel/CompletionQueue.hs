@@ -35,6 +35,8 @@ module Network.GRPC.LowLevel.CompletionQueue
   )
 where
 
+import Debug.Trace
+
 import           Control.Concurrent.STM.TVar                    (newTVarIO)
 import           Control.Exception                              (bracket)
 import           Control.Monad.Managed
@@ -62,12 +64,12 @@ withCompletionQueue grpc = bracket (createCompletionQueue grpc)
 
 createCompletionQueue :: GRPC -> IO CompletionQueue
 createCompletionQueue _ = do
-  unsafeCQ <- C.grpcCompletionQueueCreateForPluck C.reserved
-  currentPluckers <- newTVarIO 0
-  currentPushers <- newTVarIO 0
-  shuttingDown <- newTVarIO False
-  nextTag <- newIORef minBound
-  return CompletionQueue{..}
+  unsafeCQ <- trace "ccq 1" $ C.grpcCompletionQueueCreateForPluck C.reserved
+  currentPluckers <- trace "ccq 2" $ newTVarIO 0
+  currentPushers <- trace "ccq 3" $ newTVarIO 0
+  shuttingDown <- trace "ccq 4" $ newTVarIO False
+  nextTag <- trace "ccq 5" $ newIORef minBound
+  trace "ccq 6" $ return CompletionQueue{..}
 
 -- | Very simple wrapper around 'grpcCallStartBatch'. Throws 'GRPCIOShutdown'
 -- without calling 'grpcCallStartBatch' if the queue is shutting down.

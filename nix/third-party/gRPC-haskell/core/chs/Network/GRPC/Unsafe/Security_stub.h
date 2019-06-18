@@ -1,0 +1,10 @@
+#include "HsFFI.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
+extern void zdnixZZSthirdzmpartyZZSgRPCzmhaskellZZScoreZZSgrpczmhaskellzmcorezdNetworkziGRPCziUnsafeziSecurityzdnixZZZZSthirdzzmpartyZZZZSgRPCzzmhaskellZZZZScoreZZZZSgrpczzmhaskellzzmcorezuNetworkzziGRPCzziUnsafezziSecurityzumkCGetMetadata(StgStablePtr the_stableptr, HsPtr a1, HsFunPtr a2, HsPtr a3);
+extern void zdnixZZSthirdzmpartyZZSgRPCzmhaskellZZScoreZZSgrpczmhaskellzmcorezdNetworkziGRPCziUnsafeziSecurityzdnixZZZZSthirdzzmpartyZZZZSgRPCzzmhaskellZZZZScoreZZZZSgrpczzmhaskellzzmcorezuNetworkzziGRPCzziUnsafezziSecurityzumkAuthProcess(StgStablePtr the_stableptr, HsPtr a1, HsPtr a2, HsPtr a3, HsWord64 a4, void* original_return_addr, HsFunPtr a5, HsPtr a6);
+#ifdef __cplusplus
+}
+#endif
+

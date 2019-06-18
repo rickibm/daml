@@ -27,6 +27,8 @@ module DA.Daml.LF.ScenarioServiceClient.LowLevel
   , ScenarioServiceException(..)
   ) where
 
+import Debug.Trace
+
 import Conduit (runConduit, (.|))
 import GHC.Generics
 import Text.Read
@@ -184,12 +186,12 @@ withScenarioService opts@Options{..} f = do
         -- the callback. Note that on Windows, killThread will not be able to kill the conduits
         -- if they are blocked in hGetNonBlocking so it is crucial that we close stdin in the
         -- callback or withAsync will block forever.
-        flip finally (System.IO.hClose stdinHdl) $ do
+        flip finally (trace "closing stdin" $ System.IO.hClose stdinHdl) $ do
             System.IO.hFlush System.IO.stdout
             port <- either fail pure =<< takeMVar portMVar
             liftIO $ optLogInfo $ "Scenario service backend running on port " <> show port
             let grpcConfig = ClientConfig (Host "localhost") (Port port) [] Nothing
-            withGRPCClient grpcConfig $ \client ->
+            trace ("grpcConfig") $ withGRPCClient grpcConfig $ \client ->
                 f Handle
                     { hClient = client
                     , hOptions = opts

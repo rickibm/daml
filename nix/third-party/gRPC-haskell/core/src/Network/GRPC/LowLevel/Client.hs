@@ -11,6 +11,8 @@
 -- `Network.GRPC.LowLevel.Client.Unregistered`.
 module Network.GRPC.LowLevel.Client where
 
+import Debug.Trace
+
 import           Control.Exception                     (bracket, finally)
 import           Control.Concurrent.MVar
 import           Control.Monad
@@ -69,7 +71,7 @@ data ClientConfig = ClientConfig {clientServerHost :: Host,
                                  }
 
 clientEndpoint :: ClientConfig -> Endpoint
-clientEndpoint ClientConfig{..} = endpoint clientServerHost clientServerPort
+clientEndpoint ClientConfig{..} = trace "endpoint" $ endpoint clientServerHost clientServerPort
 
 addMetadataCreds :: C.ChannelCredentials
                     -> Maybe C.ClientMetadataCreate
@@ -81,15 +83,15 @@ addMetadataCreds c (Just create) = do
 
 createChannel :: ClientConfig -> C.GrpcChannelArgs -> IO C.Channel
 createChannel conf@ClientConfig{..} chanargs =
-  case clientSSLConfig of
-    Nothing -> C.grpcInsecureChannelCreate e chanargs C.reserved
+  trace "create grpc channel" $ case clientSSLConfig of
+    Nothing -> trace "create grpc channel - no ssl" $ C.grpcInsecureChannelCreate e chanargs C.reserved
     Just (ClientSSLConfig rootCertPath Nothing plugin) ->
-      do rootCert <- mapM B.readFile rootCertPath
+      do rootCert <- trace "create grpc channel - ssl 1" $ mapM B.readFile rootCertPath
          C.withChannelCredentials rootCert Nothing Nothing $ \creds -> do
            creds' <- addMetadataCreds creds plugin
            C.secureChannelCreate creds' e chanargs C.reserved
     Just (ClientSSLConfig x (Just (ClientSSLKeyCertPair y z)) plugin) ->
-      do rootCert <- mapM B.readFile x
+      do rootCert <- trace "create grpc channel - ssl 2" $ mapM B.readFile x
          privKey <- Just <$> B.readFile y
          clientCert <- Just <$> B.readFile z
          C.withChannelCredentials rootCert privKey clientCert $ \creds -> do
@@ -100,9 +102,9 @@ createChannel conf@ClientConfig{..} chanargs =
 createClient :: GRPC -> ClientConfig -> IO Client
 createClient grpc clientConfig =
   C.withChannelArgs (clientArgs clientConfig) $ \chanargs -> do
-    clientChannel <- createChannel clientConfig chanargs
-    clientCQ <- createCompletionQueue grpc
-    return Client{..}
+    clientChannel <- trace ("create clientChannel") $ createChannel clientConfig chanargs
+    clientCQ <- trace ("create clientCQ") $ createCompletionQueue grpc
+    trace ("returning grpc client") $ return Client{..}
 
 destroyClient :: Client -> IO ()
 destroyClient Client{..} = do
