@@ -50,6 +50,7 @@ def daml_deps():
                 ##   https://github.com/tweag/rules_haskell/pull/950 and
                 ##   https://github.com/tweag/rules_haskell/pull/952
                 #"@com_github_digital_asset_daml//bazel_tools:haskell_ghci_repl_toolchain_lib.patch",
+                "@com_github_digital_asset_daml//bazel_tools:haskell-update.patch",
             ],
             patch_args = ["-p1"],
             sha256 = rules_haskell_sha256,

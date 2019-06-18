@@ -1,0 +1,29 @@
+diff --git a/haskell/haskell.bzl b/haskell/haskell.bzl
+index 3ae7989..dcb31f1 100644
+--- a/haskell/haskell.bzl
++++ b/haskell/haskell.bzl
+@@ -236,7 +236,7 @@ haskell_library = rule(
+             doc = "A dictionary mapping dependencies to module reexports that should be available for import by dependencies.",
+         ),
+         linkstatic = attr.bool(
+-            default = False,
++            default = True,
+             doc = "Create a static library, not both a static and a shared library.",
+         ),
+         package_name = attr.string(
+diff --git a/haskell/private/haskell_impl.bzl b/haskell/private/haskell_impl.bzl
+index d940c72..cb6cb59 100644
+--- a/haskell/private/haskell_impl.bzl
++++ b/haskell/private/haskell_impl.bzl
+@@ -147,8 +147,9 @@ def _expand_make_variables(name, ctx, strings):
+         ctx.attr.plugins,
+         ctx.attr.tools,
+     ]
+-    targets = [target for attr in label_attrs for target in attr]
+-    strings = [ctx.expand_location(str, targets) for str in strings]
++    for attr in label_attrs:
++        targets = [target for target in attr]
++        strings = [ctx.expand_location(str, targets) for str in strings]
+     strings = [ctx.expand_make_variables(name, str, {}) for str in strings]
+     return strings
+ 
