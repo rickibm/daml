@@ -11,6 +11,19 @@ index 3ae7989..dcb31f1 100644
              doc = "Create a static library, not both a static and a shared library.",
          ),
          package_name = attr.string(
+diff --git a/haskell/private/actions/link.bzl b/haskell/private/actions/link.bzl
+index 6298119..65ccfaf 100644
+--- a/haskell/private/actions/link.bzl
++++ b/haskell/private/actions/link.bzl
+@@ -354,7 +354,7 @@ def link_library_dynamic(hs, cc, dep_info, cc_info, extra_srcs, objects_dir, my_
+         hs = hs,
+         cc_info = cc_info,
+         dynamic = False,
+-        pic = True,
++        pic = False,
+         binary = dynamic_library,
+         args = args,
+     )
 diff --git a/haskell/private/haskell_impl.bzl b/haskell/private/haskell_impl.bzl
 index d940c72..cb6cb59 100644
 --- a/haskell/private/haskell_impl.bzl
@@ -27,3 +40,16 @@ index d940c72..cb6cb59 100644
      strings = [ctx.expand_make_variables(name, str, {}) for str in strings]
      return strings
  
+diff --git a/haskell/providers.bzl b/haskell/providers.bzl
+index 961d4d3..7fff7fe 100644
+--- a/haskell/providers.bzl
++++ b/haskell/providers.bzl
+@@ -207,7 +207,7 @@ def get_ghci_extra_libs(hs, cc_info, dynamic = True, path_prefix = None):
+         hs,
+         cc_info,
+         dynamic = dynamic,
+-        pic = True,
++        pic = False,
+         fixup_dir = "_ghci_libs",
+     )
+     libs = depset(transitive = [static_libs, dynamic_libs])

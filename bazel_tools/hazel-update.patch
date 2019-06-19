@@ -11,3 +11,34 @@ index acfb3a0..62522e8 100644
  docdir  = "DOCDIR_IS_NOT_SET"
  
  ghc     = "{ghc}"
+diff --git a/hazel/third_party/cabal2bazel/bzl/cabal_package.bzl b/hazel/third_party/cabal2bazel/bzl/cabal_package.bzl
+index 0ea02ed..ac7c69f 100644
+--- a/hazel/third_party/cabal2bazel/bzl/cabal_package.bzl
++++ b/hazel/third_party/cabal2bazel/bzl/cabal_package.bzl
+@@ -479,7 +479,7 @@ def _get_build_attrs(
+         visibility = ["//visibility:public"],
+         linkstatic = select({
+             "@bazel_tools//src/conditions:windows": True,
+-            "//conditions:default": False,
++            "//conditions:default": True,
+         }),
+     )
+ 
+@@ -566,7 +566,7 @@ def cabal_haskell_package(
+             visibility = ["//visibility:public"],
+             linkstatic = select({
+                 "@bazel_tools//src/conditions:windows": True,
+-                "//conditions:default": False,
++                "//conditions:default": True,
+             }),
+         )
+ 
+@@ -576,7 +576,7 @@ def cabal_haskell_package(
+             visibility = ["//visibility:public"],
+             linkstatic = select({
+                 "@bazel_tools//src/conditions:windows": True,
+-                "//conditions:default": False,
++                "//conditions:default": True,
+             }),
+         )
+ 

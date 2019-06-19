@@ -14,6 +14,7 @@ cc_library(
   srcs = ["cbits/hs_clock_darwin.c"],
   hdrs = ["cbits/hs_clock_darwin.c"],
   strip_include_prefix = "cbits",
+  linkstatic = True,
 )
 
 cc_library(
@@ -25,6 +26,7 @@ cc_library(
   srcs = ["cbits/hs_clock_win32.c"],
   hdrs = ["cbits/hs_clock_win32.c"],
   strip_include_prefix = "cbits",
+  linkstatic = True,
 )
 
 cc_library(
@@ -34,6 +36,7 @@ cc_library(
     "@bazel_tools//src/conditions:windows": [":cbits-windows"],
     "//conditions:default": [],
   }),
+  linkstatic = True,
 )
 
 haskell_library(

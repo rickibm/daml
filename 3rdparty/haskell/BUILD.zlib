@@ -11,6 +11,7 @@ cc_library(
   srcs = glob(["cbits/*.c"]),
   includes = ["cbits"],
   strip_include_prefix = "cbits",
+  linkstatic = True,
 )
 
 haskell_library(
