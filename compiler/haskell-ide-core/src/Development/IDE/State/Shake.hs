@@ -30,7 +30,7 @@ module Development.IDE.State.Shake(
     shakeProfile,
     useStale,
     use, uses,
-    use_, uses_,
+    use_, uses_, actionToMaybe,
     define, defineEarlyCutoff,
     getAllDiagnostics, unsafeClearAllDiagnostics,
     reportSeriousError, reportSeriousErrorDie,
@@ -331,6 +331,10 @@ isBadDependency x
     | Just (_ :: BadDependency) <- fromException x = True
     | otherwise = False
 
+-- | Catches BadDependency exception thrown by uses_ and use_
+-- and turns it into a Maybe.
+actionToMaybe :: Action a -> Action (Maybe a)
+actionToMaybe act = actionCatch (Just <$> act) (\(_ :: BadDependency) -> pure Nothing)
 
 newtype Q k = Q (k, NormalizedFilePath)
     deriving (Eq,Hashable,NFData)
