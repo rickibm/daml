@@ -106,6 +106,10 @@ genrule(
     outs = ["test-1.0.dar"],
     cmd = "$(location :encoder_binary) $(SRCS) -o $@ -v 1.0",
     tools = [":encoder_binary"],
+    visibility = [
+        "//daml-lf:__subpackages__",
+        "//language-support:__subpackages__",
+    ],
 )
 
 genrule(

@@ -6,29 +6,29 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.Objects;
 import java.util.Optional;
 
-public final class Enum extends Value {
+public final class DamlEnum extends Value {
 
     private final Optional<Identifier> enumId;
 
     private final String constructor;
 
-    public Enum(@NonNull Identifier enumId, @NonNull String constructor){
+    public DamlEnum(@NonNull Identifier enumId, @NonNull String constructor){
         this.enumId = Optional.of(enumId);
         this.constructor = constructor;
     }
 
-    public Enum(@NonNull String constructor){
+    public DamlEnum(@NonNull String constructor){
         this.enumId = Optional.empty();
         this.constructor = constructor;
     }
 
-    public static Enum fromProto(ValueOuterClass.Enum value) {
+    public static DamlEnum fromProto(ValueOuterClass.Enum value) {
         String constructor = value.getConstructor();
         if (value.hasEnumId()) {
             Identifier variantId = Identifier.fromProto(value.getEnumId());
-            return new Enum(variantId, constructor);
+            return new DamlEnum(variantId, constructor);
         } else {
-            return new Enum(constructor);
+            return new DamlEnum(constructor);
         }
     }
 
@@ -60,7 +60,7 @@ public final class Enum extends Value {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Enum value = (Enum) o;
+        DamlEnum value = (DamlEnum) o;
         return Objects.equals(enumId, value.enumId) && Objects.equals(constructor, value.constructor);
     }
 

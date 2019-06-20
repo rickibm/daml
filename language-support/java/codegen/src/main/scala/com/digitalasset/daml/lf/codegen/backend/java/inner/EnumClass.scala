@@ -27,13 +27,14 @@ private[inner] object EnumClass extends StrictLogging {
 
   private def generateValuesArray(enum: iface.Enum): FieldSpec =
     FieldSpec
-      .builder(ArrayTypeName.of(classOf[javaapi.data.Enum]), "values")
+      .builder(ArrayTypeName.of(classOf[javaapi.data.DamlEnum]), "values")
       .addModifiers(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
-      .initializer(
-        CodeBlock.of(
-          enum.constructors
-            .map(c => s"""new Enum("$c")""")
-            .mkString("{\n    ", ",\n    ", "\n  }")))
+      .initializer(CodeBlock.of(
+        enum.constructors
+          .map(c => s"""new $$T("$c")""")
+          .mkString("{\n    ", ",\n    ", "\n  }"),
+        List.fill(enum.constructors.length)(classOf[javaapi.data.DamlEnum]): _*
+      ))
       .build()
 
   private def generateFromValue(
@@ -49,8 +50,8 @@ private[inner] object EnumClass extends StrictLogging {
       .addParameter(classOf[javaapi.data.Value], "value$")
       .addStatement(
         "$T enum$$ = value$$.asEnum().orElseThrow(() -> new IllegalArgumentException($S))",
-        classOf[javaapi.data.Enum],
-        s"Expected Enum to build an instance of the Enum ${className.simpleName()}"
+        classOf[javaapi.data.DamlEnum],
+        s"Expected DamlEnum to build an instance of the  ${className.simpleName()}"
       )
       .addStatement("return $T.valueOf(enum$$.getConstructor())", className)
       .build()
@@ -60,7 +61,7 @@ private[inner] object EnumClass extends StrictLogging {
     MethodSpec
       .methodBuilder("toValue")
       .addModifiers(Modifier.PUBLIC)
-      .returns(classOf[javaapi.data.Enum])
+      .returns(classOf[javaapi.data.DamlEnum])
       .addStatement("return $T.values[ordinal()]", className)
       .build()
 
